@@ -72,7 +72,3 @@ DATABASE_URL=postgresql://user:password@localhost/dbname
 ## 📄 License
 
 This project is for educational purposes.
-
----
-
-*Built with Flask and ❤️*
