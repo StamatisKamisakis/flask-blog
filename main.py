@@ -1,5 +1,6 @@
 import os
 from datetime import date
+from datetime import datetime
 from flask import Flask, abort, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
@@ -153,7 +154,7 @@ def register():
         # This line will authenticate the user with Flask-Login
         login_user(new_user)
         return redirect(url_for("get_all_posts"))
-    return render_template("register.html", form=form, current_user=current_user)
+    return render_template("register.html", form=form, current_user=current_user, current_year=datetime.now().year)
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -176,7 +177,7 @@ def login():
             login_user(user)
             return redirect(url_for('get_all_posts'))
 
-    return render_template("login.html", form=form, current_user=current_user)
+    return render_template("login.html", form=form, current_user=current_user, current_year=datetime.now().year)
 
 
 @app.route('/logout')
@@ -189,7 +190,7 @@ def logout():
 def get_all_posts():
     result = db.session.execute(db.select(BlogPost))
     posts = result.scalars().all()
-    return render_template("index.html", all_posts=posts, current_user=current_user)
+    return render_template("index.html", all_posts=posts, current_user=current_user, current_year=datetime.now().year)
 
 
 # Add a POST method to be able to post comments
@@ -211,7 +212,7 @@ def show_post(post_id):
         )
         db.session.add(new_comment)
         db.session.commit()
-    return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form)
+    return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form, current_year=datetime.now().year)
 
 
 # Use a decorator so only an admin user can create new posts
@@ -268,12 +269,12 @@ def delete_post(post_id):
 
 @app.route("/about")
 def about():
-    return render_template("about.html", current_user=current_user)
+    return render_template("about.html", current_user=current_user, current_year=datetime.now().year)
 
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html", current_user=current_user)
+    return render_template("contact.html", current_user=current_user, current_year=datetime.now().year)
 
 # Optional: You can include the email sending code from Day 60:
 # DON'T put your email and password here directly! The code will be visible when you upload to Github.
