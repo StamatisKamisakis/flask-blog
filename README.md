@@ -6,7 +6,7 @@ A full-featured Flask blog application with user authentication, database manage
 
 **Visit the live website:** [https://flask-blog-0b20.onrender.com/](https://flask-blog-0b20.onrender.com/)
 
-> 💡 **Note on Free Tier Hosting:** This application is hosted on Render's free plan. If the website has been inactive, the server may take around **30-40 seconds** to wake up and load the initial page. Thank you for your patience!
+> 💡 **Note on Free Tier Hosting:** This application is hosted on Render's free plan. If the website has been inactive, the server may take around **30-60 seconds** to wake up and load the initial page. Thank you for your patience!
 ## 🚀 Features
 
 - **User Authentication** - Secure registration and login with password hashing
