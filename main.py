@@ -194,17 +194,17 @@ def get_all_posts():
 
 
 # Add a POST method to be able to post comments
+# Updated show_post route with correct indentation and redirection
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
-    # Add the CommentForm to the route
     comment_form = CommentForm()
-    # Only allow logged-in users to comment on posts
+    
     if comment_form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.")
             return redirect(url_for("login"))
-
+            
         new_comment = Comment(
             text=comment_form.comment_text.data,
             comment_author=current_user,
@@ -212,6 +212,10 @@ def show_post(post_id):
         )
         db.session.add(new_comment)
         db.session.commit()
+        # Redirect to avoid form resubmission on refresh
+        return redirect(url_for("show_post", post_id=post_id))
+        
+    # Corrected indentation: outside the 'if' block
     return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form, current_year=datetime.now().year)
 
 
