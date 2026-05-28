@@ -1,10 +1,10 @@
 import os
+import hashlib
 from datetime import date
 from datetime import datetime
 from flask import Flask, abort, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
-from flask_gravatar import Gravatar
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
@@ -18,15 +18,11 @@ app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
-# For adding profile images to the comment section
-gravatar = Gravatar(app,
-                    size=100,
-                    rating='g',
-                    default='retro',
-                    force_default=False,
-                    force_lower=False,
-                    use_ssl=False,
-                    base_url=None)
+# CUSTOM GRAVATAR FILTER (Replaces the broken Flask-Gravatar package)
+@app.template_filter('gravatar')
+def gravatar_filter(email, size=100, rating='g', default='retro'):
+    email_hash = hashlib.md5(email.lower().encode('utf-8')).hexdigest()
+    return f"https://gravatar.com{email_hash}?s={size}&d={default}&r={rating}"
 
 # CREATE DATABASE
 class Base(DeclarativeBase):
@@ -35,7 +31,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:/
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
-# CONFIGURE TABLES (All models grouped together so relationships work properly)
+# CONFIGURE TABLES
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -69,7 +65,7 @@ class Comment(db.Model):
 with app.app_context():
     db.create_all()
 
-# Configure Flask-Login (Placed AFTER models definition)
+# Configure Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 
