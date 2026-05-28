@@ -132,6 +132,11 @@ def logout():
     logout_user()
     return redirect(url_for('get_all_posts'))
 
+@app.route("/about")
+def about():
+    return render_template("about.html", current_user=current_user, current_year=datetime.now().year)
+
+
 @app.route('/')
 def get_all_posts():
     result = db.session.execute(db.select(BlogPost))
