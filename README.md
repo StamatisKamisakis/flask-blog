@@ -19,7 +19,7 @@ A full-featured Flask blog application with user authentication, database manage
 ## 🛠️ Technologies Used
 
 - **Backend:** Python, Flask, Flask-SQLAlchemy
-- **Database:** PostgreSQL (Railway)
+- **Database:** PostgreSQL
 - **Frontend:** HTML, CSS, Bootstrap 5
 - **Authentication:** Flask-Login, Werkzeug
 - **Forms:** WTForms, Flask-WTF
