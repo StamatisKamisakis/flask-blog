@@ -136,6 +136,10 @@ def logout():
 def about():
     return render_template("about.html", current_user=current_user, current_year=datetime.now().year)
 
+@app.route("/contact")
+def contact():
+    return render_template("contact.html", current_user=current_user, current_year=datetime.now().year)
+
 
 @app.route('/')
 def get_all_posts():
