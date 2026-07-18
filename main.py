@@ -28,6 +28,11 @@ def gravatar_filter(email, size=100, rating='g', default='retro'):
 class Base(DeclarativeBase):
     pass
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///posts.db")
+if os.environ.get("DATABASE_URL"):
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        "connect_args": {"sslmode": "require"}
+    }
+
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
