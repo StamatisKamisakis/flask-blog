@@ -30,13 +30,18 @@ class Base(DeclarativeBase):
     
 db_url = os.environ.get("DATABASE_URL", "sqlite:///posts.db")
 
-# Διόρθωση για το Render και επιβολή SSL
 if db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql://", 1)
-if "sqlite" not in db_url and "sslmode" not in db_url:
-    db_url += "?sslmode=require"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+
+# Επιβολή SSL ανεξάρτητα από το URL string
+if "sqlite" not in db_url:
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        "connect_args": {
+            "sslmode": "require"
+        }
+    }
 
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
