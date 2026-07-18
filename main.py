@@ -182,3 +182,6 @@ def show_post(post_id):
         return redirect(url_for("show_post", post_id=post_id))
         
     return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form, current_year=datetime.now().year)
+
+if __name__ == "__main__":
+    app.run(debug=True)
